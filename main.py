@@ -9,6 +9,7 @@ def check_for_biome_folders(zip_file):
     with st.spinner("Please wait..."):
         time.sleep(5)
         with zipfile.ZipFile(zip_file, 'r') as myzip:
+            root = zipfile.Path(myzip)
             contents = myzip.namelist()
             data_folders = [f for f in contents if f.startswith('data/') and f.endswith('/')]
             biome_folders = []

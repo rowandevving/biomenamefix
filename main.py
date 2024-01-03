@@ -6,19 +6,21 @@ import streamlit as st
 
 
 def check_for_biome_folders(zip_file):
-    with st.spinner("Please wait..."):
-        time.sleep(5)
-        with zipfile.ZipFile(zip_file, 'r') as myzip:
-            root = zipfile.Path(myzip)
-            contents = myzip.namelist()
-            data_folders = [f for f in contents if f.startswith('data/') and f.endswith('/')]
-            biome_folders = []
-            for folder in data_folders:
-                folder_contents = myzip.namelist()
-                biome_folder = folder + "worldgen/biome/"
-                if biome_folder in folder_contents and "/tags/" not in folder:
-                    biome_folders.append(biome_folder)
-            return biome_folders
+    global start
+    start = time.time()
+    with zipfile.ZipFile(zip_file, 'r') as myzip:
+        root = zipfile.Path(myzip)
+        contents = myzip.namelist()
+        data_folders = [f for f in contents if f.startswith('data/') and f.endswith('/')]
+        biome_folders = []
+        for folder in data_folders:
+            folder_contents = myzip.namelist()
+            biome_folder = folder + "worldgen/biome/"
+            if biome_folder in folder_contents and "/tags/" not in folder:
+                biome_folders.append(biome_folder)
+        global end
+        end = time.time()
+        return biome_folders
 
 
 def create_json_file(zip_file):
@@ -46,6 +48,7 @@ def main():
             st.info("The following biome folders were found:")
             for folder in biome_folders:
                 st.write(folder)
+            st.caption("Parsed in " + str(int((end - start)*1000)) + "ms")
             create_json_file(file)
             with open("en_us.json", "r") as infile:
                 json_data = json.load(infile)

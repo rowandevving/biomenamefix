@@ -1,6 +1,5 @@
 import time
 import json
-import os
 import zipfile
 import streamlit as st
 
@@ -38,24 +37,29 @@ def create_json_file(zip_file):
 
 def main():
     st.set_page_config(page_title="Biome Name Fix", page_icon="🏝️")
-    st.title("Biome Name Fix Generator")
-    st.write("You may have noticed that when you play with datapacks that add biomes e.g. Terralith, that mods like Xaero's minimap, Journeymap, MiniHUD and other mods that read biome names have untranslated strings, often looking something like 'biome.namespace.biomename', which is not all that pretty. This tool fixes that by generating a lang file that you can use in the /assets/minecraft/lang folder of a resourcepack or mod. If you wish to make fixes for multiple packs, you can use https://weld.smithed.dev to make a combined pack and then stick it back in here.")
-    st.write("See this image as an example:")
+    st.write("""
+      # Biome Name Fix Generator       
+      
+      When using datapacks that add new biomes, you may notice that mods such as Xaero's Minimap, Journeymap, and MiniHUD display untranslated biome names as 'biome.namespace.biomename,' which isn't very pretty.
+
+      This tool solves that issue by generating a language file that you can place in a [resource pack](https://minecraft.wiki/w/Resource_pack#Language) or mod.
+      If you're working with multiple packs, you can use [Weld](https://weld.smithed.dev) to create a combined pack and then process it with this tool.
+    """)
     st.image('https://i.postimg.cc/YSZv9z51/bnf.png', use_column_width='always')
-    file = st.file_uploader("Upload a datapack", type=["zip"])
+    file = st.file_uploader("Upload a datapack or mod", type=["zip", "jar"])
     if file is not None:
         biome_folders = check_for_biome_folders(file)
         if len(biome_folders) > 0:
-            st.info("The following biome folders were found:")
+            st.info("Biomes were found in the following locations:")
             for folder in biome_folders:
                 st.write(folder)
             st.caption("Parsed in " + str(int((end - start)*1000)) + "ms")
             create_json_file(file)
             with open("en_us.json", "r") as infile:
                 json_data = json.load(infile)
-            st.download_button("Download Lang JSON", json.dumps(json_data, indent=2), file_name="en_us.json")
+            st.download_button("Download JSON file", json.dumps(json_data, indent=2), file_name="en_us.json")
         else:
-            st.error("No biome folders were found.")
+            st.error("No biomes were found.")
 
 
 if __name__ == "__main__":

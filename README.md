@@ -1,9 +1,7 @@
 # Biome Name Fix
 
-You may have noticed that when you play with datapacks that add biomes e.g. Terralith, that mods like Xaero's minimap, Journeymap, MiniHUD and other mods that read biome names have untranslated strings, often looking something like 'biome.namespace.biomename', which is not all that pretty.
+When using datapacks that add new biomes, you may notice that mods such as Xaero's Minimap, Journeymap, and MiniHUD display untranslated biome names as 'biome.namespace.biomename,' which isn't very pretty.
 
-This tool fixes that by generating a lang file that you can use in the /assets/minecraft/lang folder of a resourcepack or mod.
-
-If you wish to make fixes for multiple packs, you can use https://weld.smithed.dev to make a combined pack and then stick it back in here.
+This tool solves that issue by generating a language file that you can place in a [resource pack](https://minecraft.wiki/w/Resource_pack#Language) or mod. If you're working with multiple packs, you can use [Weld](https://weld.smithed.dev) to create a combined pack and then process it with this tool.
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://biomenamefix.streamlit.app/)
